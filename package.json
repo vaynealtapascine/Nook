@@ -4,7 +4,7 @@
   "description": "A local-first gathering and weaving space with device sync",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check app.js && node --check model.js && node --check server.js && node --check agent-api.js && node --check capture-tools.js && node --check sync-model.js && node --check sync-client.js && node --check collection-api.js && node --check sw.js && node --check share-inbox.js && node --check processing-api.js && node --check processing-client.js && node --check ocr-worker.js",
+    "check": "node --check app.js && node --check model.js && node --check server.js && node --check agent-api.js && node --check capture-tools.js && node --check sync-model.js && node --check sync-client.js && node --check collection-api.js && node --check sw.js && node --check share-inbox.js && node --check processing-api.js && node --check processing-client.js && node --check ocr-worker.js && node --check theme.js",
     "test": "node --test tests/*.test.js"
   },
   "keywords": [],

@@ -10,6 +10,7 @@
     <link rel="icon" type="image/png" href="/icons/nook-192.png" />
     <link rel="apple-touch-icon" href="/icons/nook-180.png" />
     <title>Webweave Nook</title>
+    <script src="theme.js"></script>
     <link rel="stylesheet" href="styles.css" />
     <script defer src="vendor/tesseract.min.js"></script>
     <script defer src="model.js?v=20261001-processing"></script>
@@ -41,6 +42,7 @@
           /><span id="save-state" class="save-state" role="status">Saved on this device</span>
         </div>
         <div class="top-actions">
+          <label class="theme-picker"><span>Theme</span><select id="theme-preference" aria-label="Color theme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
           <button
             id="undo"
             class="icon-button"

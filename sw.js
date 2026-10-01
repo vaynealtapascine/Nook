@@ -2,7 +2,7 @@
 "use strict";
 
 importScripts("/share-inbox.js");
-const VERSION = "2026-10-01-v7-processing";
+const VERSION = "2026-10-02-v8-theme";
 const PREFIX = "webweave-nook-";
 const SHELL_CACHE = `${PREFIX}shell-${VERSION}`;
 const OCR_CACHE = `${PREFIX}ocr-2026-10-01-v3`;
@@ -11,6 +11,7 @@ const fileUrl = (name) => new URL(name, BASE).href;
 const CORE_FILES = [
   "index.html",
   "styles.css",
+  "theme.js",
   "model.js",
   "capture-tools.js",
   "processing-client.js",

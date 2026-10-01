@@ -264,7 +264,7 @@ function createServer(options = {}) {
       return;
     }
     if (
-      !["/", "/index.html", "/app.js", "/model.js", "/sync-model.js", "/sync-client.js", "/capture-tools.js", "/processing-client.js", "/share-inbox.js", "/styles.css", "/sw.js", "/manifest.webmanifest", "/icons/nook-192.png", "/icons/nook-512.png", "/icons/nook-maskable-512.png", "/icons/nook-180.png"].includes(
+      !["/", "/index.html", "/app.js", "/theme.js", "/model.js", "/sync-model.js", "/sync-client.js", "/capture-tools.js", "/processing-client.js", "/share-inbox.js", "/styles.css", "/sw.js", "/manifest.webmanifest", "/icons/nook-192.png", "/icons/nook-512.png", "/icons/nook-maskable-512.png", "/icons/nook-180.png"].includes(
         pathname,
       ) &&
       !pathname.startsWith("/vendor/")

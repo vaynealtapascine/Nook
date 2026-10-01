@@ -33,6 +33,8 @@ Put the server behind an HTTPS proxy to enable remote clipboard permissions and 
 
 On this PC, the shared server listens at `127.0.0.1:4177`. Other devices open **[nook.vayne.garden](https://nook.vayne.garden/)** with Tailscale connected, then pair in **Devices & sync**. Keep the host PC awake and connected while syncing.
 
+Use **Theme** in the header to choose System, Light, or Dark. System follows your device’s color scheme; your choice is saved on this device.
+
 ## Five ways to work
 
 - **Gathering:** copy and paste, then keep going. Paste images, passages, or URLs, drop image files, or use Quick capture. Image transcription runs in the background with bundled English OCR; word-based tags are added automatically. Both can be switched off. Credits can wait until Marking.
