@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#fbf7f2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Nook" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="/icons/nook-192.png" />
+    <link rel="apple-touch-icon" href="/icons/nook-180.png" />
+    <title>Webweave Nook</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="vendor/tesseract.min.js"></script>
+    <script defer src="model.js?v=20261001-processing"></script>
+    <script defer src="capture-tools.js?v=20261001-processing"></script>
+    <script defer src="processing-client.js?v=20261001-processing"></script>
+    <script defer src="sync-model.js?v=20261001-processing"></script>
+    <script defer src="sync-client.js?v=20261001-processing"></script>
+    <script defer src="share-inbox.js?v=20261001-processing"></script>
+    <script defer src="app.js?v=20261001-processing"></script>
+  </head>
+  <body data-workflow="gathering" data-view="gathering" class="gathering-mode">
+    <a class="skip-link" href="#main-workspace">Skip to workspace</a>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">✳</div>
+          <div>
+            <strong>webweave nook</strong
+            ><small>a place for collected connections</small>
+          </div>
+        </div>
+        <div class="project-name">
+          <span>Project</span
+          ><input
+            id="project-title"
+            aria-label="Project title"
+            placeholder="Untitled project"
+            maxlength="100"
+          /><span id="save-state" class="save-state" role="status">Saved on this device</span>
+        </div>
+        <div class="top-actions">
+          <button
+            id="undo"
+            class="icon-button"
+            title="Undo · Ctrl+Z"
+            aria-label="Undo"
+          >
+            ↶</button
+          ><button
+            id="redo"
+            class="icon-button"
+            title="Redo · Ctrl+Shift+Z"
+            aria-label="Redo"
+          >
+            ↷</button
+          ><div class="device-connection"><button id="device-sync" class="button device-button" title="Connect this device and sync your collection"><span aria-hidden="true">⇄</span> Devices & sync</button><span id="sync-status" class="sync-status" role="status" aria-live="polite">Local copy</span></div>
+        </div>
+      </header>
+      <nav class="workflow-nav" aria-label="Your workflow">
+        <div class="view-tabs" role="tablist" aria-label="Workspace workflow">
+          <button id="tab-gathering" class="view-tab active" data-view="gathering" role="tab" aria-controls="gathering-view" aria-selected="true"><span class="tab-number">01</span><span class="tab-copy"><strong>Gathering</strong><small>Collect what catches your eye</small></span></button>
+          <button id="tab-library" class="view-tab" data-view="library" role="tab" aria-controls="library-view" aria-selected="false"><span class="tab-number">02</span><span class="tab-copy"><strong>Nipping</strong><small>Pick out a few pieces</small></span></button>
+          <button id="tab-draft" class="view-tab" data-view="draft" role="tab" aria-controls="draft-view" aria-selected="false"><span class="tab-number">03</span><span class="tab-copy"><strong>Weaving</strong><small>Make the connections</small></span></button>
+          <button id="tab-marking" class="view-tab" data-view="marking" role="tab" aria-controls="marking-view" aria-selected="false"><span class="tab-number">04</span><span class="tab-copy"><strong>Marking</strong><small>Give each piece its context</small></span></button>
+          <button id="tab-peeling" class="view-tab" data-view="peeling" role="tab" aria-controls="peeling-view" aria-selected="false"><span class="tab-number">05</span><span class="tab-copy"><strong>Peeling</strong><small>Take it into Affinity</small></span></button>
+        </div>
+      </nav>
+      <div class="workspace">
+        <aside class="library panel" aria-label="Piece library">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Your collection</p>
+              <h2>Thread basket</h2>
+            </div>
+            <span id="piece-count" class="count-pill">0</span>
+          </div>
+          <p class="helper">
+            Drag a piece into a part, or select it to place it. A piece can belong to many webweaves.
+          </p>
+          <button id="capture" class="button primary full">
+            ＋ Quick capture
+          </button>
+          <button id="add-image" class="button add-image">＋ Add images</button>
+          <div class="add-row">
+            <button id="add-quote" class="button subtle">
+              ＋ Quote or text</button
+            ><button id="add-link" class="button subtle">＋ Link</button>
+          </div>
+          <input
+            id="image-input"
+            type="file"
+            accept="image/*"
+            multiple
+            hidden
+          />
+          <input
+            id="project-input"
+            type="file"
+            accept="application/json,.json"
+            hidden
+          />
+          <label class="search-wrap"
+            ><span aria-hidden="true">⌕</span
+            ><input
+              id="piece-search"
+              type="search"
+              placeholder="Find a piece…"
+              aria-label="Search pieces"
+          /></label>
+          <div class="library-filters">
+            <select id="library-filter" aria-label="Filter collection">
+              <option value="all">All pieces</option>
+              <option value="inbox">Unused pieces</option>
+              <option value="draft">In this project</option>
+              <option value="favorites">Favorites</option>
+              <option value="uncredited">Needs credit</option>
+              <option value="image">Images</option>
+              <option value="quote">Quotes</option>
+              <option value="link">Links</option>
+              <option value="trash">Trash</option></select
+            ><select id="library-sort" aria-label="Sort collection">
+              <option value="newest">Newest first</option>
+              <option value="oldest">Oldest first</option>
+              <option value="author">By author</option>
+              <option value="title">By title</option>
+            </select>
+          </div>
+          <div id="tag-filters" class="tag-filters"></div>
+          <div id="bulk-tools"></div>
+          <div id="library-list" class="library-list"></div>
+          <div id="library-drop" class="library-drop">
+            Drop images, text, or links here
+          </div>
+          <button class="button quiet full" data-action="capture-help">
+            Clip from the web · Shortcuts
+          </button>
+        </aside>
+        <main id="main-workspace" class="main-panel" tabindex="-1">
+          <div class="draft-switcher">
+            <label
+              >Working project
+              <select
+                id="draft-picker"
+                aria-label="Current project"
+              ></select></label
+            ><button class="button small" data-action="new-project">
+              ＋ New project</button
+            ><button class="button small quiet" data-action="duplicate-draft">
+              Duplicate project</button
+            ><button
+              class="icon-button"
+              data-action="delete-draft"
+              aria-label="Delete current project"
+              title="Delete current project"
+            >
+              ×</button
+            ><select id="draft-status" aria-label="Project status">
+              <option value="gathering">Gathering</option>
+              <option value="weaving">Weaving</option>
+              <option value="finished">Finished</option>
+            </select>
+          </div>
+          <div class="view-header">
+            <div>
+              <p id="workflow-step" class="eyebrow">01 · Collect</p>
+              <h1 id="view-title">Gathering</h1>
+              <p id="view-subtitle" class="view-subtitle">
+                An image, a passage, a passing thought. Paste it here and keep going.
+              </p>
+            </div>
+            <button class="button quiet workspace-help" data-action="capture-help" aria-label="Open capture tips and keyboard shortcuts"><span aria-hidden="true">⌘</span> Shortcuts & tips</button>
+          </div>
+          <div class="draft-notes">
+            <input
+              id="draft-notes"
+              aria-label="Project intention or notes"
+              placeholder="A theme, a feeling, a thread to follow…"
+            />
+          </div>
+          <div id="gathering-view" class="view-content" role="tabpanel" aria-labelledby="tab-gathering"></div>
+          <div id="library-view" class="view-content hidden" role="tabpanel" aria-labelledby="tab-library"></div>
+          <div id="research-view" class="view-content hidden"></div>
+          <div id="draft-view" class="view-content hidden" role="tabpanel" aria-labelledby="tab-draft"></div>
+          <div id="marking-view" class="view-content hidden" role="tabpanel" aria-labelledby="tab-marking"></div>
+          <div id="peeling-view" class="view-content hidden" role="tabpanel" aria-labelledby="tab-peeling"></div>
+          <div id="preview-view" class="view-content hidden"></div>
+          <div id="alt-view" class="view-content hidden"></div>
+          <div id="sources-view" class="view-content hidden"></div>
+          <div class="peeling-actions" aria-label="Collection backups">
+            <span class="source-note">Keep a collection backup</span>
+            <button id="export-svg" class="button primary" hidden>Export webweave for Affinity ↗</button>
+            <button id="save-project" class="button quiet" title="Back up every webweave and piece · Ctrl+S">Back up collection</button>
+            <button id="import-project" class="button quiet">Import a backup</button>
+          </div>
+        </main>
+        <aside class="inspector panel" aria-label="Piece details">
+          <div id="inspector-content"></div>
+        </aside>
+      </div>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <dialog id="confirm-dialog">
+      <form method="dialog">
+        <h2 id="dialog-title">Are you sure?</h2>
+        <p id="dialog-message"></p>
+        <div class="dialog-actions">
+          <button value="cancel" class="button quiet">Cancel</button
+          ><button value="confirm" class="button danger">Remove</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="capture-dialog">
+      <form id="capture-form">
+        <div class="inspector-top">
+          <h2>Save a little something</h2>
+          <button
+            type="button"
+            class="icon-button"
+            data-action="close-capture"
+            aria-label="Close capture"
+          >
+            ×
+          </button>
+        </div>
+        <p class="helper">
+          Paste a passage or a link. Credits can be completed later.
+        </p>
+        <label class="field"
+          ><span>Quote, passage, or URL</span
+          ><textarea
+            id="capture-content"
+            rows="5"
+            placeholder="What caught your eye?"
+            required
+          ></textarea>
+        </label>
+        <div class="field-grid">
+          <label class="field"
+            ><span>Author / artist</span
+            ><input id="capture-author" list="known-authors" /></label
+          ><label class="field"
+            ><span>Work title</span><input id="capture-title"
+          /></label>
+        </div>
+        <label class="field"
+          ><span>Source URL</span
+          ><input id="capture-url" type="url" placeholder="https://…" /></label
+        ><label class="field"
+          ><span>Tags, separated by commas</span
+          ><input id="capture-tags" placeholder="longing, home, water" /></label
+        ><label class="checkbox-label"
+          ><input id="capture-place" type="checkbox" /> Also add to the active
+          part</label
+        >
+        <div class="dialog-actions">
+          <button
+            type="button"
+            class="button quiet"
+            data-action="close-capture"
+          >
+            Cancel</button
+          ><button type="submit" class="button primary">Save piece</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="help-dialog">
+      <div class="inspector-top">
+        <h2>Keep gathering</h2>
+        <button
+          class="icon-button"
+          data-action="close-help"
+          aria-label="Close help"
+        >
+          ×
+        </button>
+      </div>
+      <p>
+        Drag <a id="bookmarklet" href="#">Save to Nook</a> to your browser’s
+        bookmarks bar. While reading a page, select a passage and click that
+        bookmark. Nook will open a capture form with the page’s source attached.
+      </p>
+      <p>
+        For images, copy the image in your browser and paste it here. You can
+        also paste an image URL, or drop a saved image file.
+      </p>
+      <dl class="shortcut-list">
+        <dt>Ctrl / ⌘ V</dt>
+        <dd>Capture clipboard text or images outside a text field</dd>
+        <dt>Ctrl / ⌘ Shift V</dt>
+        <dd>Capture the clipboard from anywhere</dd>
+        <dt>Ctrl / ⌘ K</dt>
+        <dd>Quick capture</dd>
+        <dt>Ctrl / ⌘ F</dt>
+        <dd>Search the collection</dd>
+        <dt>Ctrl / ⌘ S</dt>
+        <dd>Back up all drafts and pieces</dd>
+        <dt>Ctrl / ⌘ Z</dt>
+        <dd>Undo outside text fields</dd>
+        <dt>Escape</dt>
+        <dd>Close details or a dialog</dd>
+      </dl>
+      <p class="helper">
+        Collecting a URL uses the internet only when you request it. Saved
+        images, drafting, credits, and text recognition work offline.
+      </p>
+    </dialog>
+    <datalist id="known-authors"></datalist>
+    <input
+      id="agent-input"
+      type="file"
+      accept="application/json,.json"
+      hidden
+    />
+    <dialog id="import-tray">
+      <form id="import-tray-form">
+        <div class="inspector-top">
+          <div>
+            <p class="eyebrow">Bring them into your collection</p>
+            <h2>Review your import</h2>
+          </div>
+          <button
+            type="button"
+            class="icon-button"
+            data-action="close-import"
+            aria-label="Close import"
+          >
+            ×
+          </button>
+        </div>
+        <div class="source-actions">
+          <strong id="import-tray-count"></strong
+          ><button
+            type="button"
+            class="button small"
+            data-action="import-select-all"
+          >
+            Select all</button
+          ><button
+            type="button"
+            class="button small"
+            data-action="import-select-none"
+          >
+            Select none
+          </button>
+        </div>
+        <div id="import-tray-grid"></div>
+        <div class="field-grid">
+          <label class="field"
+            ><span>Shared author / artist</span
+            ><input id="import-author" list="known-authors" /></label
+          ><label class="field"
+            ><span>Shared tags</span
+            ><input id="import-tags" placeholder="longing, home"
+          /></label>
+        </div>
+        <label class="field"
+          ><span>Shared source URL · optional</span
+          ><input
+            id="import-source"
+            type="url"
+            placeholder="https://…" /></label
+        ><label class="checkbox-label"
+          ><input id="import-place" type="checkbox" /> Also place in the active
+          part</label
+        >
+        <div class="dialog-actions">
+          <button type="button" class="button quiet" data-action="close-import">
+            Cancel</button
+          ><button id="import-tray-submit" type="submit" class="button primary">
+            Import selected
+          </button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

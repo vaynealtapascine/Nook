@@ -1,0 +1,5 @@
+node_modules/
+.nook-agent/
+.nook-data/
+test-results/
+nook-network.json

@@ -1,0 +1,8 @@
+# Add this block to the existing selfhost Caddyfile, which defines the common
+# TLS snippet and already obtains certificates with a Cloudflare DNS challenge.
+nook.vayne.garden {
+    import common
+    @outside not remote_ip 100.64.0.0/10 fd7a:115c:a1e0::/48 127.0.0.1/8 ::1
+    respond @outside "Connect to Tailscale to open Nook." 403
+    reverse_proxy 127.0.0.1:4177
+}
